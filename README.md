@@ -99,4 +99,5 @@ Use DateFormatter with CountMapper to count dates.
 
 
 ## Motivation
-A strong preference for 
+A strong preference for separation of concerns. This is "the strange half" of a bigger picture.
+
