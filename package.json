@@ -1,0 +1,29 @@
+{
+  "name": "sugarloaf",
+  "version": "1.0.0",
+  "description": "A modest collection of reducers",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "NODE_ENV=testing mocha --require chai/register-expect.js --recursive './test/**/*spec.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djaqua/sugarloaf.git"
+  },
+  "keywords": [
+    "reducer",
+    "reducers",
+    "callbacks"
+  ],
+  "author": "Drew Jaqua (https://www.linkedin.com/in/andrew-jaqua/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/djaqua/sugarloaf/issues"
+  },
+  "homepage": "https://github.com/djaqua/sugarloaf#readme",
+  "devDependencies": {
+    "chai": "^5.1.0",
+    "mocha": "^10.3.0",
+    "prettier": "^3.2.5"
+  }
+}
