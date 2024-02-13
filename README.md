@@ -94,7 +94,7 @@ Use DateFormatter with CountMapper to count dates.
   const dateCounts = input.reduce(mapper, {});
   console.log(dateCounts); /* { '2/5/2024': [2024-02-05T13:03:51.427Z],
                                 '2/6/2024': [2024-02-06T12:02:51.427Z, 2024-02-06T14:04:51.427Z], 
-                                '2/7/2024': [2024-02-07T11:01:51.427Z] }
+                                '2/7/2024': [2024-02-07T11:01:51.427Z] } */
 ```
 
 
