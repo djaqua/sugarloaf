@@ -31,7 +31,7 @@ basic mapper can be used with the date formatter.
 
 ```js
   const formatter = new DateFormatter({
-    keyFormat: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
+    keyFormatter: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
   });
   const mapper = new Mapper(formatter);
   const input = [ 
