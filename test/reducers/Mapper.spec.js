@@ -1,8 +1,6 @@
 const { describe, it } = require('mocha');
 const Mapper = require('./../../lib/reducers/Mapper');
 
-// TODO write test cases for execute that show that currentIndex and array are unused
-
 /*
  Theory of operation
  -------------------
@@ -40,7 +38,106 @@ MockFormatter.prototype.toValue = function () {
 
 describe('Mapper', () => {
   context('cannot exist without a formatter', () => {
-    context('constructed properly (formatter specified)', () => {
+    context('constructed with default formatter', () => {
+      let mapper;
+
+      beforeEach(() => {
+        mapper = new Mapper();
+      });
+
+      describe('undefined elements', () => {
+        it('should add the entry "\'undefined\' = undefined" to the accumulator', () => {
+          const actual = {};
+          const expected = { undefined: undefined };
+
+          mapper(actual, undefined);
+
+          expect(actual).to.be.eql(expected);
+        });
+      });
+
+      describe('null elements', () => {
+        it('should add the entry "\'null\' = null" to the accumulator', () => {
+          const actual = {};
+          const expected = { null: null };
+
+          mapper(actual, null);
+
+          expect(actual).to.be.eql(expected);
+        });
+      });
+
+      describe('string elements', () => {
+        it("should add the entry \"'alphabeta' = 'alphabeta'\" to the accumulator", () => {
+          const actual = {};
+          const expected = { alphabeta: 'alphabeta' };
+
+          mapper(actual, 'alphabeta');
+
+          expect(actual).to.be.eql(expected);
+        });
+      });
+
+      describe('number elements', () => {
+        it('should add the entry "57 = 57" to the accumulator', () => {
+          const actual = {};
+          const expected = { 57: 57 };
+
+          mapper(actual, 57);
+
+          expect(actual).to.be.eql(expected);
+        });
+      });
+
+      describe('Date elements', () => {
+        it('should add the entry "\'Thu Feb 08 2024 22:36:51 GMT-0500 (Eastern Standard Time)\' = 2024-02-09T03:36:51.944Z" to the accumulator', () => {
+          const date = new Date('2024-02-09T03:36:51.944Z');
+          const actual = {};
+          const expected = {
+            'Thu Feb 08 2024 22:36:51 GMT-0500 (Eastern Standard Time)': new Date(date),
+          };
+
+          mapper(actual, date);
+
+          expect(actual).to.be.eql(expected);
+        });
+      });
+
+      describe('Array elements', () => {
+        it('should add the entry "\'2,3,4\' = [2,3,4]" to the accumulator', () => {
+          const actual = {};
+          const expected = { '2,3,4': [2, 3, 4] };
+
+          mapper(actual, [2, 3, 4]);
+
+          expect(actual).to.be.eql(expected);
+        });
+      });
+
+      describe('Object elements', () => {
+        it('should add the entry "[object Object] = {text: \'alphabeta\'}" to the accumulator', () => {
+          const actual = {};
+          const expected = { '[object Object]': { text: 'alphabeta' } };
+
+          mapper(actual, { text: 'alphabeta' });
+
+          expect(actual).to.be.eql(expected);
+        });
+
+        it('should add the entry "[object Object] = {text2: \'beta\'}" to the accumulator', () => {
+          // this shows why the default formatter is woefully insufficient for handling objects
+          const actual = {};
+          const expected = { '[object Object]': { text2: 'beta' } };
+
+          mapper(actual, { text: 'alpha' });
+          mapper(actual, { text2: 'beta' });
+
+          expect(actual).to.be.eql(expected);
+        });
+      });
+    });
+
+    context('constructed with explicitely defined formatter', () => {
       let mapper;
 
       beforeEach(() => {
@@ -195,71 +292,99 @@ describe('Mapper', () => {
       });
     });
 
-    context('improperly constructed (no formatter specified)', () => {
-      //
-      // A Mapper cannot exist without a Formatter
-      //
-
+    context('constructed with an invalid formatter', () => {
       let mapper;
 
       beforeEach(() => {
-        mapper = new Mapper();
+        mapper = new Mapper(57);
       });
 
       describe('undefined elements', () => {
-        it("should throw TypeError: Cannot read properties of undefined (reading 'toKey')", () => {
+        it('should throw TypeError: this.formatter.toKey is not a function', () => {
           expect(() => {
             mapper({}, undefined);
-          }).to.throw("Cannot read properties of undefined (reading 'toKey')");
+          }).to.throw('this.formatter.toKey is not a function');
         });
       });
 
       describe('null elements', () => {
-        it("should throw TypeError: Cannot read properties of undefined (reading 'toKey')", () => {
+        it('should throw TypeError: this.formatter.toKey is not a function', () => {
           expect(() => {
             mapper({}, null);
-          }).to.throw("Cannot read properties of undefined (reading 'toKey')");
+          }).to.throw('this.formatter.toKey is not a function');
         });
       });
 
       describe('string elements', () => {
-        it("should throw TypeError: Cannot read properties of undefined (reading 'toKey')", () => {
+        it('should throw TypeError: this.formatter.toKey is not a function', () => {
           expect(() => {
             mapper({}, 'alphabeta');
-          }).to.throw("Cannot read properties of undefined (reading 'toKey')");
+          }).to.throw('this.formatter.toKey is not a function');
         });
       });
 
       describe('number elements', () => {
-        it("should throw TypeError: Cannot read properties of undefined (reading 'toKey')", () => {
+        it('should throw TypeError: this.formatter.toKey is not a function', () => {
           expect(() => {
             mapper({}, 57);
-          }).to.throw("Cannot read properties of undefined (reading 'toKey')");
+          }).to.throw('this.formatter.toKey is not a function');
         });
       });
 
       describe('Date elements', () => {
-        it("should throw TypeError: Cannot read properties of undefined (reading 'toKey')", () => {
+        it('should throw TypeError: this.formatter.toKey is not a function', () => {
           expect(() => {
             mapper({}, new Date());
-          }).to.throw("Cannot read properties of undefined (reading 'toKey')");
+          }).to.throw('this.formatter.toKey is not a function');
         });
       });
 
       describe('Array elements', () => {
-        it("should throw TypeError: Cannot read properties of undefined (reading 'toKey')", () => {
+        it('should throw TypeError: this.formatter.toKey is not a function', () => {
           expect(() => {
             mapper({}, [2, 3, 4]);
-          }).to.throw("Cannot read properties of undefined (reading 'toKey')");
+          }).to.throw('this.formatter.toKey is not a function');
         });
       });
 
       describe('Object elements', () => {
-        it("should throw TypeError: Cannot read properties of undefined (reading 'toKey')", () => {
+        it('should throw TypeError: this.formatter.toKey is not a function', () => {
           expect(() => {
             mapper({}, { text: 'alphabeta' });
-          }).to.throw("Cannot read properties of undefined (reading 'toKey')");
+          }).to.throw('this.formatter.toKey is not a function');
         });
+      });
+    });
+  });
+
+  context('unused parameters', () => {
+    let mapper;
+
+    beforeEach(() => {
+      mapper = new Mapper();
+    });
+
+    describe('currentIndex', () => {
+      it('should have the same effect for currentIndex=0 as for currentIndex=57', () => {
+        const actual = {};
+        const expected = {};
+
+        mapper(expected, 'alphabeta', 0);
+        mapper(actual, 'alphabeta', 57);
+
+        expect(actual).to.be.eql(expected);
+      });
+    });
+
+    describe('array', () => {
+      it('should have the same effect for currentIndex=0 as for currentIndex=57', () => {
+        const actual = {};
+        const expected = {};
+
+        mapper(expected, 'alphabeta', 0, ['betaalpha']);
+        mapper(actual, 'alphabeta', 0, ['alphabeta']);
+
+        expect(actual).to.be.eql(expected);
       });
     });
   });
