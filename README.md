@@ -81,7 +81,7 @@ Use DateFormatter with CountMapper to count dates.
 
 ```js
   const formatter = new DateFormatter({
-    keyFormat: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
+    keyFormatter: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
   });
   const mapper = new GroupMapper(formatter);
   const input = [ 
