@@ -10,30 +10,30 @@ npm install sugarloaf
 ## Recipes (aka "Usage")
 
 A few things to note:
-* mappers cannot exist without formatters; you have to be deliberate
-* the relationship between mappers and formatters is that of abstractions and 
+* map-makers cannot exist without helpers
+* the relationship between map-makers and helpers is that of abstractions and 
   implementors in a GoF Bridge pattern, respectively. 
-* As a general rule of thumb, mappers are more concerned with values while formatters
-  are more concerned with keys, but the rules can be broken :smile: 
+* map-makers are concerned with key-value pairs as they pertain to objects/maps
+* helpers are concerned with representations of elements in different contexts
 
 ### uniq recipe
 
-In the simple case of strings, a basic mapper & formatter combination will suffice.
+In the simple case of strings, a basic mapper will suffice.
 
 ```js
-  const mapper = new Mapper(new Formatter());
+  const mapper = new MapMaker();
   const uniqValues = Object.keys(['a','a','b','a','c','d','c','e'].reduce(mapper, {}));
   console.log(uniqValues); // ['a', 'b', 'c', 'd', 'e']
 ```
 
 In the case where you might want to filter duplicate dates on the month, date, and year, a
-basic mapper can be used with the date formatter. 
+basic mapper can be used with the date helper. 
 
 ```js
-  const formatter = new DateFormatter({
-    keyFormatter: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
+  const helper = new DateHelper({
+    identityFormatter: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
   });
-  const mapper = new Mapper(formatter);
+  const mapper = new MapMaker(helper);
   const input = [ 
     new Date('2024-02-07T11:01:51.427Z'), 
     new Date('2024-02-06T12:02:51.427Z'),
@@ -52,17 +52,17 @@ basic mapper can be used with the date formatter.
 ### count recipe
 
 ```js
-  const mapper = new CountMapper(new Formatter());
+  const mapper = new CountMapMaker(new Formatter());
   const countMap = ['a','a','b','a','c','d','c','e'].reduce(mapper, {});
   console.log(countMap); // {a: 3, b: 1, c: 2, d: 1, e: 1}
 ```
 
-Use DateFormatter with CountMapper to count dates. 
+Use DateHelper with CountMapMaker to count dates. 
 ```js
-  const formatter = new DateFormatter({
-    keyFormatter: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
+  const formatter = new DateHelper({
+    identityFormatter: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
   });
-  const mapper = new CountMapper(formatter);
+  const mapper = new CountMapMaker(formatter);
   const input = [ 
     new Date('2024-02-07T11:01:51.427Z'), 
     new Date('2024-02-06T12:02:51.427Z'),
@@ -80,10 +80,10 @@ Use DateFormatter with CountMapper to count dates.
 ### groupBy recipe
 
 ```js
-  const formatter = new DateFormatter({
-    keyFormatter: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
+  const formatter = new DateHelper({
+    identityFormatter: Intl.DateTimeFormat('en-US'),  // MM/DD/YYYY format
   });
-  const mapper = new GroupMapper(formatter);
+  const mapper = new GroupMapMaker(formatter);
   const input = [ 
     new Date('2024-02-07T11:01:51.427Z'), 
     new Date('2024-02-06T12:02:51.427Z'),

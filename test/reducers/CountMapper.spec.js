@@ -1,26 +1,20 @@
 const { describe, it } = require('mocha');
-const CountMapper = require('../../lib/reducers/CountMapper');
+const CountMapMaker = require('../../lib/reducers/CountMapMaker');
 
 // TODO add tests that prove execute ignores currentIndex and array
 // TODO add tests that prove that formatter.toValue never gets called (i.e. mapper.formatter.valueCount = 0)
 // TODO add tests that prove that empty strings for currentValue return 1
 // TODO add tests that prove that non-empty strings for currentValue get concatenated with '1'
 
-/*
- Theory of operation
- -------------------
-  See theory of operation in Mapper.spec.js
-*/
-
-function MockFormatter() {
+function MockHelper() {
   this.keyCount = 0;
   this.valueCount = 0;
 }
-MockFormatter.prototype.toKey = function () {
+MockHelper.prototype.getIdentity = function () {
   return `key${this.keyCount++}`;
 };
 
-MockFormatter.prototype.toValue = function () {
+MockHelper.prototype.transform = function () {
   return `value${this.valueCount++}`;
 };
 
@@ -29,8 +23,8 @@ describe('CountMapper', () => {
   let mapper;
 
   beforeEach(() => {
-    formatter = new MockFormatter();
-    mapper = new CountMapper(formatter);
+    formatter = new MockHelper();
+    mapper = new CountMapMaker(formatter);
   });
 
   describe('undefined elements', () => {

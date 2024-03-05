@@ -1,5 +1,5 @@
 const { describe, it } = require('mocha');
-const Mapper = require('./../../lib/reducers/Mapper');
+const MapMaker = require('../../lib/reducers/MapMaker');
 
 /*
  Theory of operation
@@ -24,15 +24,15 @@ const Mapper = require('./../../lib/reducers/Mapper');
   that its methods are being used according to the specifications of Mapper, hence an access count is incorporated into the keys and values generated.
 */
 
-function MockFormatter() {
+function MockHelper() {
   this.keyCount = 0;
   this.valueCount = 0;
 }
-MockFormatter.prototype.toKey = function () {
+MockHelper.prototype.getIdentity = function () {
   return `key${this.keyCount++}`;
 };
 
-MockFormatter.prototype.toValue = function () {
+MockHelper.prototype.transform = function () {
   return `value${this.valueCount++}`;
 };
 
@@ -42,7 +42,7 @@ describe('Mapper', () => {
       let mapper;
 
       beforeEach(() => {
-        mapper = new Mapper();
+        mapper = new MapMaker();
       });
 
       describe('undefined elements', () => {
@@ -141,7 +141,7 @@ describe('Mapper', () => {
       let mapper;
 
       beforeEach(() => {
-        mapper = new Mapper(new MockFormatter());
+        mapper = new MapMaker(new MockHelper());
       });
 
       describe('undefined elements', () => {
@@ -296,62 +296,62 @@ describe('Mapper', () => {
       let mapper;
 
       beforeEach(() => {
-        mapper = new Mapper(57);
+        mapper = new MapMaker(57);
       });
 
       describe('undefined elements', () => {
-        it('should throw TypeError: this.formatter.toKey is not a function', () => {
+        it('should throw TypeError: this.helper.getIdentity is not a function', () => {
           expect(() => {
             mapper({}, undefined);
-          }).to.throw('this.formatter.toKey is not a function');
+          }).to.throw('this.helper.getIdentity is not a function');
         });
       });
 
       describe('null elements', () => {
-        it('should throw TypeError: this.formatter.toKey is not a function', () => {
+        it('should throw TypeError: this.helper.getIdentity is not a function', () => {
           expect(() => {
             mapper({}, null);
-          }).to.throw('this.formatter.toKey is not a function');
+          }).to.throw('this.helper.getIdentity is not a function');
         });
       });
 
       describe('string elements', () => {
-        it('should throw TypeError: this.formatter.toKey is not a function', () => {
+        it('should throw TypeError: this.helper.getIdentity is not a function', () => {
           expect(() => {
             mapper({}, 'alphabeta');
-          }).to.throw('this.formatter.toKey is not a function');
+          }).to.throw('this.helper.getIdentity is not a function');
         });
       });
 
       describe('number elements', () => {
-        it('should throw TypeError: this.formatter.toKey is not a function', () => {
+        it('should throw TypeError: this.helper.getIdentity is not a function', () => {
           expect(() => {
             mapper({}, 57);
-          }).to.throw('this.formatter.toKey is not a function');
+          }).to.throw('this.helper.getIdentity is not a function');
         });
       });
 
       describe('Date elements', () => {
-        it('should throw TypeError: this.formatter.toKey is not a function', () => {
+        it('should throw TypeError: this.helper.getIdentity is not a function', () => {
           expect(() => {
             mapper({}, new Date());
-          }).to.throw('this.formatter.toKey is not a function');
+          }).to.throw('this.helper.getIdentity is not a function');
         });
       });
 
       describe('Array elements', () => {
-        it('should throw TypeError: this.formatter.toKey is not a function', () => {
+        it('should throw TypeError: this.helper.getIdentity is not a function', () => {
           expect(() => {
             mapper({}, [2, 3, 4]);
-          }).to.throw('this.formatter.toKey is not a function');
+          }).to.throw('this.helper.getIdentity is not a function');
         });
       });
 
       describe('Object elements', () => {
-        it('should throw TypeError: this.formatter.toKey is not a function', () => {
+        it('should throw TypeError: this.helper.getIdentity is not a function', () => {
           expect(() => {
             mapper({}, { text: 'alphabeta' });
-          }).to.throw('this.formatter.toKey is not a function');
+          }).to.throw('this.helper.getIdentity is not a function');
         });
       });
     });
@@ -361,7 +361,7 @@ describe('Mapper', () => {
     let mapper;
 
     beforeEach(() => {
-      mapper = new Mapper();
+      mapper = new MapMaker();
     });
 
     describe('currentIndex', () => {
