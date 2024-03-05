@@ -2,7 +2,12 @@
   "name": "sugarloaf",
   "version": "1.0.0",
   "description": "A modest collection of reducers",
-  "main": "lib/index.js",
+  "main": "./lib",
+  "files": [
+    "lib",
+    "LICENSE",
+    "README.md"
+  ],
   "scripts": {
     "test": "NODE_ENV=testing mocha --require chai/register-expect.js --recursive './test/**/*spec.js'"
   },
